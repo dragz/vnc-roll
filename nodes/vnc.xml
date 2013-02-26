@@ -1,0 +1,117 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+	<description>
+	  The VNC roll.  Setup a simple XFCE desktop and TigerVNC.
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log$
+	</changelog>
+
+	<package>roll-vnc-usersguide</package>
+	<package> openmotif </package>
+	<package> tigervnc  </package>
+	<package> tigervnc-server </package>
+	<package> tigervnc-server-applet  </package>
+	<package> xinetd </package>
+	<package> xorg-x11-fonts </package>
+	<package> xorg-x11-fonts-100dpi </package>
+	<package> xorg-x11-fonts-75dpi </package>
+	<package> xorg-x11-fonts-ISO8859-1-75dpi </package>
+	<package> xorg-x11-fonts-ISO8859-1-100dpi </package>
+	<package> xorg-x11-fonts-Type1 </package>
+	<package> xorg-x11-fonts-misc </package>
+	<package> xorg-x11-utils </package>
+	<package> xorg-x11-apps </package>
+	<package> xorg-x11-xdm  </package>
+	<package> xterm </package>
+
+<post>
+<file name="/etc/xinetd.d/vnc">
+# default: off
+service vnc
+{
+        flags           = REUSE
+        socket_type     = stream
+        wait            = no
+        user            = nobody
+        server          = /usr/bin/Xvnc
+        server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -rfbport 5901  -inetd -query localhost -log *:syslog:40 -SecurityTypes=VenCrypt,TLSNone
+        disable         = no
+}
+</file>
+
+<file name="/etc/services" mode="append">
+vnc             5901/tcp                        # VNC
+</file>
+
+/sbin/chkconfig --add xinetd
+/sbin/chkconfig xinetd on
+
+
+#
+# X setup
+#
+<file name="/etc/sysconfig/desktop">
+DISPLAYMANAGER=XDM
+DESKTOP=XFCE
+</file>
+
+<file name="/tmp/Xclients-xfce.patch">
+diff -up ./Xclients.orig ./Xclients
+--- ./Xclients.orig	2013-02-26 11:20:28.882824105 +0100
++++ ./Xclients	2013-02-26 11:21:22.949587397 +0100
+@@ -10,6 +10,7 @@
+ 
+ GSESSION="$(which gnome-session 2&gt;/dev/null)"
+ STARTKDE="$(which startkde 2&gt;/dev/null)"
++STARTXFCE="$(which startxfce4 2&gt;/dev/null)"
+ 
+ # check to see if the user has a preferred desktop
+ PREFERRED=
+@@ -19,6 +20,8 @@ if [ -f /etc/sysconfig/desktop ]; then
+ 	PREFERRED="$GSESSION"
+     elif [ "$DESKTOP" = "KDE" ]; then
+ 	PREFERRED="$STARTKDE"
++    elif [ "$DESKTOP" = "XFCE" ]; then
++        PREFERRED="$STARTXFCE"
+     fi
+ fi
+</file>
+
+(cd /etc/X11/xinit; patch &lt; /tmp/Xclients-xfce.patch) 
+
+<file name="/etc/rc.d/rc.local" mode="append">
+yum --enablerepo epel groupinstall XFCE
+</file>
+
+
+# make xdm accept xdmcp requests
+sed -i '/requestPort/ s/^/!/' /etc/X11/xdm/xdm-config
+
+# Allow all hosts to connect to the login service
+<file name="/etc/X11/xdm/Xaccess" mode="append">
+*   # allow any host to connect
+</file>
+
+# Go up to runlevel 5 so xdm will start automatically on bootup
+sed -i "/:initdefault:/ s/3/5/" /etc/inittab
+
+
+# Get rid of the ugly 3D appearance on the login screen
+sed -i -r -e "/^xlogin\*frameWidth/ s/[0-9]+/0/" /etc/X11/xdm/Xresources
+sed -i -r -e "/^xlogin\*innerFramesWidth/ s/[0-9]+/0/" /etc/X11/xdm/Xresources
+# Plain white background
+sed -i -r -e "/^xlogin\*background/ s/grey/white/" /etc/X11/xdm/Xresources
+
+
+</post>
+</kickstart>

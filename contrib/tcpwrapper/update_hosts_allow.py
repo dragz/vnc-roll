@@ -9,8 +9,9 @@ ALLOWED_TIMEOUT=5*60
 #
 #  Default allowed domains, eg. norwegian academic networks and partners
 #
-allowed_domains = ["129.242.0.0/16","10.1.0.0/16"]
+allowed_domains = ["129.242.0.0/255.255.0.0","10.1.0.0/255.255.0.0"]
 
+# tmp file that will be copied to the vnc servers.
 hostsallow="/tmp/hosts.allow"
 
 # allowstate contains the state between runs.

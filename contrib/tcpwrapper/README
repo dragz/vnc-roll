@@ -1,5 +1,15 @@
+This setup is for the vnc-roll setup on the Stallo cluster.  Use or modify to
+your own liking.
+
 Dynamically whitelist IPs upon successful login into stallo-gui.
 Xvnc is run under the control of xinetd which supports tcpwrapper.
 
 sshlog.conf detects valid logins and calls update_hosts_allow.py which updates
 and syncronizes hosts.allow on all 16 vnc-nodes, stallo-vnc-[1...16].
+
+INSTALLATION:
+On stallo-adm (rocks frontend)
+cp sshlog.conf /etc/rsyslog.d
+cp update_hosts_allow.py /opt/sbin
+service rsyslog restart
+

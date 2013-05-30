@@ -45,8 +45,8 @@ debug = lambda s : file("/tmp/hostallowdebug.txt","a").write(s+"\n")
 
 
 def copyfiles(fn):
-#    copy="seq 1 16 | xargs -i -P 16 scp %s stallo-vnc-{}:/etc/hosts.allow"%fn
-    copy="scp %s stallo-gui:/etc/" % fn
+    copy="seq 1 16 | xargs -i -P 16 scp %s stallo-vnc-{}:/etc/"%fn
+#    copy="scp %s stallo-gui:/etc/" % fn
     os.system(copy)
 
 #

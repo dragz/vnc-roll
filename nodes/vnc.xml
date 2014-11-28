@@ -44,6 +44,7 @@ service vnc-nocrypt
         flags           = REUSE
         socket_type     = stream
         wait            = no
+	only_from       = 127.0.0.1
         user            = nobody
         server          = /usr/bin/Xvnc
         server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -inetd -query localhost -SecurityTypes=None

@@ -73,13 +73,17 @@ yum --enablerepo epel groupinstall XFCE
 sed -i '/requestPort/ s/^/!/' /etc/X11/xdm/xdm-config
 
 
-# get rid of the ugly X logo on the login screen
+# get rid of the ugly X logo and 3D appearance on the login screen
 sed -i -e "/logoFileName/ s/^/#/g" /etc/X11/xdm/Xresources
 # fix the borders
 sed -i -e "/shdColor/ s/grey.*/black/g" /etc/X11/xdm/Xresources
 sed -i -e "/hiColor/ s/grey.*/black/g" /etc/X11/xdm/Xresources
 myhostname=$(hostname | cut -f1 -d.)
 sed -i -e "/^xlogin\*greeting/ s/CLIENTHOST/$myhostname/" /etc/X11/xdm/Xresources
+sed -i -r -e "/^xlogin\*frameWidth/ s/[0-9]+/0/" /etc/X11/xdm/Xresources
+sed -i -r -e "/^xlogin\*innerFramesWidth/ s/[0-9]+/0/" /etc/X11/xdm/Xresources
+# Plain white background
+sed -i -r -e "/^xlogin\*background/ s/grey/white/" /etc/X11/xdm/Xresources
 
 
 <file name="/etc/X11/xdm/xdm-config" mode="append">

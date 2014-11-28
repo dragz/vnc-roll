@@ -67,10 +67,10 @@ Xvnc novnc : ALL : DENY
 </file>
 
 
-<!-- Let novnc listen on 6081 and give stunnel the task of encrypting the connection -->
+<!-- Let novnc listen on localhost:6081 and give stunnel the task of encrypting the connection -->
 <!-- on port 6080 -->
 <file name="/etc/sysconfig/novnc">
-WEBSOCKIFYARGS="--web /usr/share/novnc/html/ 6081 localhost:5902"
+WEBSOCKIFYARGS="--web /usr/share/novnc/html/ localhost:6081 localhost:5902"
 </file>
 
 <file name="/etc/stunnel/stunnel-novnc-proxy.conf">

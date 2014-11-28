@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+<description>
+  Use XFCE and xdm instead of the default GNOME/gdm setup.
+</description>
+
+
+<changelog>
+</changelog>
+
+<main>
+       <package> xorg-x11-fonts </package>
+        <package> xorg-x11-fonts-100dpi </package>
+        <package> xorg-x11-fonts-75dpi </package>
+        <package> xorg-x11-fonts-ISO8859-1-75dpi </package>
+        <package> xorg-x11-fonts-ISO8859-1-100dpi </package>
+        <package> xorg-x11-fonts-Type1 </package>
+        <package> xorg-x11-fonts-misc </package>
+        <package> xorg-x11-utils </package>
+        <package> xorg-x11-apps </package>
+        <package> xorg-x11-xdm  </package>
+        <package> xterm </package>
+</main>
+
+<pre>
+	<!-- partitioning commands go here -->
+</pre>
+
+
+<post>
+
+#
+# X setup
+#
+<file name="/etc/sysconfig/desktop">
+DISPLAYMANAGER=XDM
+DESKTOP=XFCE
+</file>
+
+<file name="/tmp/Xclients-xfce.patch">
+diff -up ./Xclients.orig ./Xclients
+--- ./Xclients.orig	2013-02-26 11:20:28.882824105 +0100
++++ ./Xclients	2013-02-26 11:21:22.949587397 +0100
+@@ -10,6 +10,7 @@
+ 
+ GSESSION="$(which gnome-session 2&gt;/dev/null)"
+ STARTKDE="$(which startkde 2&gt;/dev/null)"
++STARTXFCE="$(which startxfce4 2&gt;/dev/null)"
+ 
+ # check to see if the user has a preferred desktop
+ PREFERRED=
+@@ -19,6 +20,8 @@ if [ -f /etc/sysconfig/desktop ]; then
+ 	PREFERRED="$GSESSION"
+     elif [ "$DESKTOP" = "KDE" ]; then
+ 	PREFERRED="$STARTKDE"
++    elif [ "$DESKTOP" = "XFCE" ]; then
++        PREFERRED="$STARTXFCE"
+     fi
+ fi
+</file>
+
+(cd /etc/X11/xinit; patch &lt; /tmp/Xclients-xfce.patch) 
+
+<!-- <file name="/etc/rc.d/rc.local" mode="append"> -->
+<!-- yum - - enablerepo epel groupinstall XFCE -->
+<!-- </file> -->
+yum --enablerepo epel groupinstall XFCE
+
+
+# make xdm accept xdmcp requests
+sed -i '/requestPort/ s/^/!/' /etc/X11/xdm/xdm-config
+
+
+# get rid of the ugly X logo on the login screen
+sed -i -e "/logoFileName/ s/^/#/g" /etc/X11/xdm/Xresources
+# fix the borders
+sed -i -e "/shdColor/ s/grey.*/black/g" /etc/X11/xdm/Xresources
+sed -i -e "/hiColor/ s/grey.*/black/g" /etc/X11/xdm/Xresources
+myhostname=$(hostname | cut -f1 -d.)
+sed -i -e "/^xlogin\*greeting/ s/CLIENTHOST/$myhostname/" /etc/X11/xdm/Xresources
+
+
+<file name="/etc/X11/xdm/xdm-config" mode="append">
+DisplayManager.*.setup:         /etc/X11/xdm/Xsetup
+</file>
+
+<file name="/etc/X11/xdm/Xsetup" perm="0755">
+<eval>
+cat /export/rocks/install/extras/vnc/Xsetup
+</eval>
+</file>
+
+
+#default XFCE setup without the stupid center toolbar at the bottom of the screen (thanks Jonas)
+<file name="/etc/xdg/xfce4/panel/default.xml">
+<eval>
+  cat  /export/rocks/install/extras/vnc/default.xml
+</eval>
+</file>
+
+# fix default apps in xfce
+<file name="/etc/xdg/xfce4/helpers.rc">
+<eval>
+  cat  /export/rocks/install/extras/vnc/helpers.rc
+</eval>
+</file>
+
+</post>
+
+</kickstart> 
+

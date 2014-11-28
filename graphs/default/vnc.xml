@@ -24,6 +24,10 @@
         <to>login</to>
 </edge> 
 
+<edge from="vnc">
+        <to>server</to>
+</edge> 
+
 <order gen="kgen" head="TAIL">
         <tail>vnc</tail>
 </order>

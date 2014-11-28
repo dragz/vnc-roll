@@ -19,11 +19,15 @@ Links
 =======
 
 Rocks:    http://www.rocksclusters.org/
+
 NoVNC:    https://github.com/kanaka/novnc
+
 TigerVNC: http://www.tigervnc.org/
 
 Authors
 ========
+
 Roy Dragseth, roy.dragseth@uit.no
+
 Jonas Juselius, jonas.juselius@uit.no
 

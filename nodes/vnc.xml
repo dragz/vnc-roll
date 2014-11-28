@@ -91,7 +91,7 @@ connect = localhost:6081
 </file>
 
 
-<file name="/etc/rc.d/init.d/stunnel-novnc-proxy">
+<file name="/etc/rc.d/init.d/stunnel-novnc-proxy" perm="755">
 #!/bin/sh
 #
 # chkconfig: 35 99 99

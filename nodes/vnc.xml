@@ -33,7 +33,7 @@ service vnc
         wait            = no
         user            = nobody
         server          = /usr/bin/Xvnc
-        server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -rfbport 5901  -inetd -query localhost -SecurityTypes=VenCrypt,TLSNone
+        server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -inetd -query localhost -SecurityTypes=VenCrypt,TLSNone
         disable         = no
 }
 </file>
@@ -46,7 +46,7 @@ service vnc-nocrypt
         wait            = no
         user            = nobody
         server          = /usr/bin/Xvnc
-        server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -rfbport 5902  -inetd -query localhost -localhost -SecurityTypes=None
+        server_args     = -geometry 1024x768 -fp catalogue:/etc/X11/fontpath.d,built-ins -desktop "Rocks" -inetd -query localhost -SecurityTypes=None
         disable         = no
 }
 </file>
@@ -55,6 +55,23 @@ service vnc-nocrypt
 vnc             5901/tcp                        # VNC
 vnc-nocrypt     5902/tcp                        # VNC unencrypted
 novnc           6080/tcp                        # novnc html5 to vnc proxy
+</file>
+
+<file name="/etc/hosts.allow">
+# Always block remote access to vnc-nocrypt!!!
+vnc-nocrypt : 127.0.0.1 : ALLOW
+# change this rule to whitelist external clients
+# see the vnc-roll contrib section on how to auto whitelist client IPs based
+# on successful ssh logins.
+vnc novnc : &Kickstart_PublicNetwork;/&Kickstart_PublicNetmask; : ALLOW
+vnc novnc vnc-nocrypt : ALL : DENY
+</file>
+
+
+<!-- Let novnc listen on 6081 and give stunnel the task of encrypting the connection -->
+<!-- on port 6080 -->
+<file name="/etc/sysconfig/novnc">
+WEBSOCKIFYARGS="--web /usr/share/novnc/html/ 6081 localhost:5902"
 </file>
 
 <file name="/etc/stunnel/stunnel-novnc-proxy.conf">
@@ -73,7 +90,8 @@ accept = novnc
 connect = localhost:6081
 </file>
 
-<file name="/etc/rc.d/init.d/stunnel-nonvnc-proxy">
+
+<file name="/etc/rc.d/init.d/stunnel-novnc-proxy">
 #!/bin/sh
 #
 # chkconfig: 35 99 99
@@ -117,10 +135,32 @@ exit $RETVAL
 
 </file>
 
+<!-- Enable xdmcp in gdm -->
+<file name="/etc/gdm/custom.conf">
+# GDM configuration storage
+
+[daemon]
+
+[security]
+DisallowTCP=false
+
+[xdmcp]
+Enable=true
+Port=177
+
+[greeter]
+
+[chooser]
+
+[debug]
+</file>
+
 /sbin/chkconfig --add xinetd
 /sbin/chkconfig xinetd on
 /sbin/chkconfig --add stunnel-novnc-proxy
 /sbin/chkconfig stunnel-novnc-proxy on
+/sbin/chkconfig --add novnc
+/sbin/chkconfig novnc on
 
 # Go up to runlevel 5
 sed -i "/:initdefault:/ s/3/5/" /etc/inittab

@@ -1,5 +1,0 @@
-Adaptations to use xdm and XFCE instead of gdm/GNOME.  XFCE use far
-less resounces than GNOME.  Besides, XFCE is much more limited in
-functionality so our users are not led to believe that we do desktop
-support...
-

@@ -106,7 +106,7 @@ case "$1" in
 start)
 if [ ! -e /etc/pki/tls/certs/stunnel-novnc.key ]
 then
-echo "generating self signe key"
+echo "generating self signed key"
 openssl req -x509 -nodes -batch -days 365 -newkey rsa:2048 \
    -keyout /etc/pki/tls/certs/stunnel-novnc.key \
    -out /etc/pki/tls/certs/stunnel-novnc.pem

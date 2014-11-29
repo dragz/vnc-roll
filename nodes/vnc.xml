@@ -164,5 +164,40 @@ Port=177
 # Go up to runlevel 5
 sed -i "/:initdefault:/ s/3/5/" /etc/inittab
 
+<!-- Front page -->
+<file name="/var/www/html/vnc.html">
+<![CDATA[
+<html>
+  <head>
+    <style>
+      #novncurl
+      {
+      padding: 10px 40px !important;
+      font-size: 3em !important;
+      background: #dddddd;
+      color: black;
+      text-align:center;
+      }
+    </style>
+    <title>Remote desktop access.</title>
+  </head>
+  <body>
+    <h1>
+      Remote desktop access.
+    </h1>
+    <p>
+      <a href="https://HOSTNAME:6080/vnc_auto.html" id="novncurl">Connect</a>
+    </p>
+    <p>
+      Devices without physical keyboards might want to try 
+      <a href="https://HOSTNAME:6080/vnc.html">this</a> instead.
+    </p>
+  </body>
+</html>
+]]>
+</file>
+sed -i 's/HOSTNAME/&Kickstart_PublicHostname;/g' /var/www/html/vnc.html
+
+
 </post>
 </kickstart>

@@ -1,5 +1,5 @@
 ROLLNAME	= vnc
-VERSION		= 1.0
+VERSION		= 1.0beta
 RELEASE		= 0
 COLOR		= pink
 

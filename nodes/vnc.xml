@@ -62,7 +62,7 @@ novnc           6080/tcp                        # novnc html5 to vnc proxy
 # change this rule to whitelist external clients
 # see the vnc-roll contrib section on how to auto whitelist client IPs based
 # on successful ssh logins.
-Xvnc novnc : &Kickstart_PublicNetwork;/&Kickstart_PublicNetmask; : ALLOW
+Xvnc novnc : 127.0.0.1 &Kickstart_PublicNetwork;/&Kickstart_PublicNetmask; : ALLOW
 Xvnc novnc : ALL : DENY
 </file>
 

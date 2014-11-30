@@ -20,12 +20,12 @@
 
 	<!-- add edges here -->
 
-<edge from="vnc">
-        <to>login</to>
+<edge from="login">
+        <to>vnc</to>
 </edge> 
 
-<edge from="vnc">
-        <to>server</to>
+<edge from="server">
+        <to>vnc</to>
 </edge> 
 
 <order gen="kgen" head="TAIL">

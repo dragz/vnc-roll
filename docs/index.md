@@ -4,16 +4,18 @@ The VNC roll documentation
 Description
 ------------------------------
 
-The VNC roll gives users the possibility to run graphical user interface on the Rocks cluster within a
-browser.  This web interface is based on HTML5 and JavaScript and works on all major browser.
+The VNC roll provides a remote desktop service on the Rocks cluster within a
+browser.  This web interface is based on HTML5 and JavaScript and works on all major browsers.
+Native clients is also supported.
 
 Usage
 -----------------------------
 Open the url http://frontend.name/vnc.html and follow the link.
+A native client can connect to fronted.name:5901.
 
 Installation
 --------------------
-Download the precompiled roll from [ftp://ftp.uit.no/linux/rocks/vnc-roll/)](ftp://ftp.uit.no/linux/rocks/vnc-roll/)
+Download the precompiled roll from [ftp://ftp.uit.no/linux/rocks/vnc-roll/](ftp://ftp.uit.no/linux/rocks/vnc-roll/)
 
 and run the following sequence of commands
 

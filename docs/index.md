@@ -13,9 +13,7 @@ Open the url http://frontend.name/vnc.html and follow the link.
 
 Installation
 --------------------
-Download the precompiled roll from 
-
-[ftp://ftp.uit.no/linux/rocks/vnc-roll/]
+Download the precompiled roll from the [ftp site](ftp://ftp.uit.no/linux/rocks/vnc-roll/)
 
 and run the following sequence of commands
 

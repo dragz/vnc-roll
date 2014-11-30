@@ -61,28 +61,15 @@ REDHAT.ROOT     = $(PWD)/../../
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
-default: $(NAME).spec ../$(NAME)-$(VERSION).tar.gz
+build:
+	/bin/true
 
-html: predoc
-	jw --backend html --dsl $(PWD)/rocks.dsl#html index.sgml 
-
-pdf: predoc
-	jw --backend pdf --dsl $(PWD)/rocks.dsl#print index.sgml
-
-build: html pdf
-
-install:: build
-	mkdir -p $(ROOT)/$(PKGROOT)/images
-	mkdir -p $(ROOT)/$(PKGROOT)/stylesheet-images
-	install -ma+r index.pdf 	$(ROOT)/$(PKGROOT)/$(NAME).pdf
-	install -ma+r *.html    	$(ROOT)/$(PKGROOT)/
-	install -ma+r images/*.png	$(ROOT)/$(PKGROOT)/images/
-	install -ma+r stylesheet-images/{*.gif,*.png} \
-		$(ROOT)/$(PKGROOT)/stylesheet-images/
-	install -ma+r rocks.css $(ROOT)/$(PKGROOT)/
+install:: 
+	mkdir -p $(ROOT)/$(PKGROOT)/
+	cp index.html $(ROOT)/$(PKGROOT)/
 
 clean::
-	rm -f *.html
-	rm -f index.pdf
+#	rm -f *.html
+#	rm -f index.pdf
 
 

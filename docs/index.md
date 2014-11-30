@@ -29,7 +29,7 @@ and run the following sequence of commands
 Links
 ----------
 
-Documentation: [http://vnc-roll.readthedocs.org/]
+Documentation: (http://vnc-roll.readthedocs.org/)
 
 Source:  [http://github.com/dragz/vnc-roll]
 

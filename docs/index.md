@@ -15,7 +15,7 @@ A native client can connect to fronted.name:5901.
 
 Installation
 --------------------
-Download the precompiled roll from [ftp://ftp.uit.no/linux/rocks/vnc-roll/](ftp://ftp.uit.no/linux/rocks/vnc-roll/)
+Download the precompiled roll from [https://github.com/dragz/vnc-roll/releases](https://github.com/dragz/vnc-roll/releases)
 
 and run the following sequence of commands
 

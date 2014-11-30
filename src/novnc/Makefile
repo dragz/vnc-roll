@@ -60,6 +60,7 @@ PKGROOT         = /var/www/html/roll-documentation/VNC/$(VERSION)
 REDHAT.ROOT     = $(PWD)/../../
 
 rpm:
+	mkdir -p ${REDHAT.ROOT}/RPMS/x86_64
 	cp novnc*.rpm ${REDHAT.ROOT}/RPMS/x86_64
 
 clean::
